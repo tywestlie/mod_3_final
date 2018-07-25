@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   def show
-    require 'pry'; binding.pry
-    @word = WordSearchService.new(params[:search]).data
+    @search_word = params[:search]
+    @sentences = WordSearchService.new(params[:search]).search
   end
 end
