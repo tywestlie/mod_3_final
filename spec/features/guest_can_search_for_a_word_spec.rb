@@ -1,4 +1,4 @@
-require 'rail_helper'
+require 'rails_helper'
 
 describe 'as a guest user on the home page' do
   it 'can validate a word' do
