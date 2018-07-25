@@ -13,14 +13,15 @@ describe 'view game score endpoint' do
     sal.plays.create(game: game, word: "no", score: 2)
 
     expected_response = {"game_id"=>game.id, "score"=>[{"user_id"=>josh.id, "score"=>15}, {"user_id"=>sal.id, "score"=>16}]}
+    VCR.use_cassette('requests/api/v1/viewing_a_game_score') do
+      get "/api/v1/games/#{game.id}"
 
-    get "/api/v1/games/#{game.id}"
 
+      expect(response).to be_successful
 
-    expect(response).to be_successful
+      parsed = JSON.parse(response.body)
 
-    parsed = JSON.parse(response.body)
-
-    expect(parsed).to eq(expected_response)
+      expect(parsed).to eq(expected_response)
+    end
   end
 end

@@ -11,19 +11,22 @@ describe 'user sends a post request' do
     josh.plays.create(game: game, word: "zoo", score: 12)
     sal.plays.create(game: game, word: "josh", score: 14)
     sal.plays.create(game: game, word: "no", score: 2)
+    expected_response = {"game_id"=>game.id, "score"=>[{"user_id"=>josh.id, "score"=>17}, {"user_id"=>sal.id, "score"=>16}]}
 
     post = {user_id: josh.id, word: 'at'}
 
-    expected_response = {"game_id"=>game.id, "score"=>[{"user_id"=>josh.id, "score"=>17}, {"user_id"=>sal.id, "score"=>16}]}
+    VCR.use_cassette('requests/api/v1/post_a_play') do
 
-    post "/api/v1/games/#{game.id}/plays", params: post
+      post "/api/v1/games/#{game.id}/plays", params: post
 
-    expect(response.status).to eq(201)
+      expect(response.status).to eq(201)
 
-    get "/api/v1/games/#{game.id}"
 
-    parsed = JSON.parse(response.body)
+      get "/api/v1/games/#{game.id}"
 
-    expect(parsed).to eq(expected_response)
+      parsed = JSON.parse(response.body)
+
+      expect(parsed).to eq(expected_response)
+    end
   end
 end
