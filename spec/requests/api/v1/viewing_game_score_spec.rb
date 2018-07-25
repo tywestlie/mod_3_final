@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe 'view game score endpoint' do
   it '/api/v1/games' do
-
     josh = User.create(id: 1, name: "Josh")
     sal = User.create(id: 2, name: "Sal")
 
@@ -13,6 +12,7 @@ describe 'view game score endpoint' do
     sal.plays.create(game: game, word: "josh", score: 14)
     sal.plays.create(game: game, word: "no", score: 2)
 
+    expected_response = {"game_id"=>game.id, "score"=>[{"user_id"=>josh.id, "score"=>15}, {"user_id"=>sal.id, "score"=>16}]}
 
     get "/api/v1/games/#{game.id}"
 
@@ -20,6 +20,7 @@ describe 'view game score endpoint' do
     expect(response).to be_successful
 
     parsed = JSON.parse(response.body)
-    require 'pry'; binding.pry
+
+    expect(parsed).to eq(expected_response)
   end
 end
