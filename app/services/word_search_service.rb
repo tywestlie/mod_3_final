@@ -4,11 +4,7 @@ class WordSearchService
   end
 
   def search
-    data[:results][0][:lexicalEntries][0][:sentences].map do |sentence|
-      if sentence[:regions].include?("North American")
-        sentence[:text]
-      end
-    end.compact
+    data[:results].first
   end
 
   private

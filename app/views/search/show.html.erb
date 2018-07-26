@@ -1,6 +1,6 @@
-<h1>Examples for using '<%= @search_word %>' </h1>
+<h1>Examples for using '<%= @presenter.word%>' </h1>
 
-<% @sentences.each do |sentence| %>
+<% @presenter.filtered_sentences.each do |sentence| %>
 <ul>
   <li class ="sentence"> <%= sentence %> </li>
 </ul>
